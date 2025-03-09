@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Contacto</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      .error {
+        color: #dc3545;
+        font-size: 0.9em;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+      <div class="container">
+        <a class="navbar-brand" href="index.html">Inicio</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Alternar navegación"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="sobremi.html">Sobre mí</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="profesional.html">Profesional</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="contacto.html">Contacto</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container my-5">
+      <h1>Contacto</h1>
+      <form id="contactForm" novalidate>
+        <div class="mb-3">
+          <label for="nombre" class="form-label">Nombre</label>
+          <input
+            type="text"
+            class="form-control"
+            id="nombre"
+            name="nombre"
+            required
+          />
+          <div id="errorNombre" class="error"></div>
+        </div>
+        <div class="mb-3">
+          <label for="apellidos" class="form-label">Apellidos</label>
+          <input
+            type="text"
+            class="form-control"
+            id="apellidos"
+            name="apellidos"
+            required
+          />
+          <div id="errorApellidos" class="error"></div>
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input
+            type="email"
+            class="form-control"
+            id="email"
+            name="email"
+            required
+          />
+          <div id="errorEmail" class="error"></div>
+        </div>
+        <div class="mb-3">
+          <label for="mensaje" class="form-label">Mensaje</label>
+          <textarea
+            class="form-control"
+            id="mensaje"
+            name="mensaje"
+            rows="5"
+            required
+          ></textarea>
+          <div id="errorMensaje" class="error"></div>
+        </div>
+        <button type="submit" class="btn btn-primary">Enviar</button>
+      </form>
+      <div id="formResult" class="mt-3"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      document
+        .getElementById("contactForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          let valid = true;
+
+          document.getElementById("errorNombre").textContent = "";
+          document.getElementById("errorApellidos").textContent = "";
+          document.getElementById("errorEmail").textContent = "";
+          document.getElementById("errorMensaje").textContent = "";
+
+          const nombre = document.getElementById("nombre").value.trim();
+          if (nombre === "") {
+            document.getElementById("errorNombre").textContent =
+              "El nombre es obligatorio.";
+            valid = false;
+          }
+
+          const apellidos = document.getElementById("apellidos").value.trim();
+          if (apellidos === "") {
+            document.getElementById("errorApellidos").textContent =
+              "Los apellidos son obligatorios.";
+            valid = false;
+          }
+
+          const email = document.getElementById("email").value.trim();
+          if (email === "") {
+            document.getElementById("errorEmail").textContent =
+              "El email es obligatorio.";
+            valid = false;
+          } else if (!/^\S+@\S+\.\S+$/.test(email)) {
+            document.getElementById("errorEmail").textContent =
+              "Introduce un email válido.";
+            valid = false;
+          }
+
+          const mensaje = document.getElementById("mensaje").value.trim();
+          if (mensaje === "") {
+            document.getElementById("errorMensaje").textContent =
+              "El mensaje es obligatorio.";
+            valid = false;
+          }
+
+          if (valid) {
+            document.getElementById("formResult").innerHTML =
+              '<div class="alert alert-success">Formulario enviado correctamente.</div>';
+            document.getElementById("contactForm").reset();
+          }
+        });
+    </script>
+  </body>
+</html>
