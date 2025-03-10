@@ -9,9 +9,51 @@
       rel="stylesheet"
     />
     <style>
+      .bg-primary {
+        background-color: #ff7f0e !important;
+      }
+      .btn-primary {
+        background-color: #ff7f0e !important;
+        border-color: #ff7f0e !important;
+      }
+      .btn-primary:hover {
+        background-color: #e67300 !important;
+        border-color: #e67300 !important;
+        transition: background-color 0.3s ease;
+      }
+      .footer {
+        background-color: #ff7f0e;
+        color: #fff;
+        padding: 1rem 0;
+      }
       .error {
         color: #dc3545;
         font-size: 0.9em;
+      }
+      .form-cuadrado {
+        border: 2px solid #ff7f0e;
+        padding: 20px;
+        width: 100%;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+      }
+      .form-cuadrado .form-label {
+        font-weight: bold;
+      }
+      .form-cuadrado .form-control {
+        border-radius: 4px;
+        border: 1px solid #ccc;
+        padding: 12px;
+      }
+      .form-cuadrado .btn-primary {
+        background-color: #ff7f0e;
+        border-color: #ff7f0e;
+        padding: 10px 20px;
+        border-radius: 4px;
+      }
+      .form-cuadrado .btn-primary:hover {
+        background-color: #e67300;
+        border-color: #e67300;
       }
     </style>
   </head>
@@ -45,59 +87,94 @@
         </div>
       </div>
     </nav>
-
     <div class="container my-5">
-      <h1>Contacto</h1>
-      <form id="contactForm" novalidate>
-        <div class="mb-3">
-          <label for="nombre" class="form-label">Nombre</label>
-          <input
-            type="text"
-            class="form-control"
-            id="nombre"
-            name="nombre"
-            required
-          />
-          <div id="errorNombre" class="error"></div>
-        </div>
-        <div class="mb-3">
-          <label for="apellidos" class="form-label">Apellidos</label>
-          <input
-            type="text"
-            class="form-control"
-            id="apellidos"
-            name="apellidos"
-            required
-          />
-          <div id="errorApellidos" class="error"></div>
-        </div>
-        <div class="mb-3">
-          <label for="email" class="form-label">Email</label>
-          <input
-            type="email"
-            class="form-control"
-            id="email"
-            name="email"
-            required
-          />
-          <div id="errorEmail" class="error"></div>
-        </div>
-        <div class="mb-3">
-          <label for="mensaje" class="form-label">Mensaje</label>
-          <textarea
-            class="form-control"
-            id="mensaje"
-            name="mensaje"
-            rows="5"
-            required
-          ></textarea>
-          <div id="errorMensaje" class="error"></div>
-        </div>
-        <button type="submit" class="btn btn-primary">Enviar</button>
-      </form>
+      <h1 class="mb-4">Contacto</h1>
+      <p class="lead">
+        Si tienes alguna duda o deseas contactarme, completa el siguiente
+        formulario:
+      </p>
+      <div class="form-cuadrado">
+        <form id="contactForm" novalidate>
+          <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre</label>
+            <input
+              type="text"
+              class="form-control"
+              id="nombre"
+              name="nombre"
+              required
+              aria-describedby="errorNombre"
+            />
+            <div id="errorNombre" class="error"></div>
+          </div>
+          <div class="mb-3">
+            <label for="apellidos" class="form-label">Apellidos</label>
+            <input
+              type="text"
+              class="form-control"
+              id="apellidos"
+              name="apellidos"
+              required
+              aria-describedby="errorApellidos"
+            />
+            <div id="errorApellidos" class="error"></div>
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input
+              type="email"
+              class="form-control"
+              id="email"
+              name="email"
+              required
+              aria-describedby="errorEmail"
+            />
+            <div id="errorEmail" class="error"></div>
+          </div>
+          <div class="mb-3">
+            <label for="mensaje" class="form-label">Mensaje</label>
+            <textarea
+              class="form-control"
+              id="mensaje"
+              name="mensaje"
+              rows="5"
+              required
+              aria-describedby="errorMensaje"
+            ></textarea>
+            <div id="errorMensaje" class="error"></div>
+          </div>
+          <button type="submit" class="btn btn-primary">Enviar</button>
+        </form>
+      </div>
       <div id="formResult" class="mt-3"></div>
+      <div class="mt-5">
+        <h2 class="mb-3">Información de Contacto</h2>
+        <p><strong>Correo:</strong> samutech@duck.com</p>
+        <p><strong>Redes sociales:</strong> @Samu_Tech</p>
+        <p><strong>Dirección:</strong> Roquetas de Mar, Almería, España</p>
+      </div>
+      <div class="mt-4">
+        <h2 class="mb-3">Ubicación</h2>
+        <div class="ratio ratio-16x9">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d51152.466923381246!2d-2.6629595787805305!3d36.74587059895194!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd70701c1ac6a79f%3A0xf7091f15d97f0d61!2s04740%20Roquetas%20de%20Mar%2C%20Almer%C3%ADa!5e0!3m2!1ses!2ses!4v1741595337713!5m2!1ses!2ses"
+            width="600"
+            height="450"
+            style="border: 0"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
+      </div>
     </div>
-
+    <footer class="footer text-center">
+      <div class="container">
+        <p class="mb-0">
+          &copy; 2025 Mi Portfolio. Todos los derechos reservados.
+        </p>
+      </div>
+    </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
       document
@@ -105,26 +182,22 @@
         .addEventListener("submit", function (e) {
           e.preventDefault();
           let valid = true;
-
           document.getElementById("errorNombre").textContent = "";
           document.getElementById("errorApellidos").textContent = "";
           document.getElementById("errorEmail").textContent = "";
           document.getElementById("errorMensaje").textContent = "";
-
           const nombre = document.getElementById("nombre").value.trim();
           if (nombre === "") {
             document.getElementById("errorNombre").textContent =
               "El nombre es obligatorio.";
             valid = false;
           }
-
           const apellidos = document.getElementById("apellidos").value.trim();
           if (apellidos === "") {
             document.getElementById("errorApellidos").textContent =
               "Los apellidos son obligatorios.";
             valid = false;
           }
-
           const email = document.getElementById("email").value.trim();
           if (email === "") {
             document.getElementById("errorEmail").textContent =
@@ -135,18 +208,19 @@
               "Introduce un email válido.";
             valid = false;
           }
-
           const mensaje = document.getElementById("mensaje").value.trim();
           if (mensaje === "") {
             document.getElementById("errorMensaje").textContent =
               "El mensaje es obligatorio.";
             valid = false;
           }
-
           if (valid) {
             document.getElementById("formResult").innerHTML =
               '<div class="alert alert-success">Formulario enviado correctamente.</div>';
             document.getElementById("contactForm").reset();
+            setTimeout(function () {
+              document.getElementById("formResult").innerHTML = "";
+            }, 10000);
           }
         });
     </script>
