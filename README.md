@@ -1,4 +1,4 @@
-# Portfolio Personal Profesional
+# Portfolio
 
 Este es un portfolio personal y profesional desarrollado con **Bootstrap 5**. La web presenta varias secciones que muestran información personal, formación académica, experiencia laboral y un formulario de contacto.
 
