@@ -33,14 +33,13 @@ Este es un portfolio personal y profesional desarrollado con **Bootstrap 5**. La
 
 ## Restricciones
 
-Este repositorio **no se puede modificar ni descargar**. Su contenido es solo de visualización y está protegido para fines de presentación.
-
-## Notas
-
-- La plantilla ha sido creada para fines educativos y personales.
-- La validación del formulario se realiza del lado del cliente usando JavaScript.
-- Ideal para mostrar tu perfil profesional de forma sencilla y efectiva.
+Este repositorio **no se puede modificar** ni crear obras derivadas del contenido original. Está disponible para su visualización y descarga, pero no se permite modificar ni adaptar el contenido de ninguna forma.
 
 ## Licencia
 
-El contenido de este repositorio está protegido y **no se permite su modificación ni descarga**.
+Este repositorio está bajo la licencia **Creative Commons Reconocimiento - Sin Obras Derivadas 4.0 Internacional (CC BY-ND 4.0)**.
+
+- Puedes ver y descargar el contenido de este repositorio, pero **no puedes modificarlo** ni crear obras derivadas.
+- No puedes utilizar el contenido con fines comerciales sin un permiso adicional.
+
+Consulta los detalles completos de esta licencia [aquí](https://creativecommons.org/licenses/by-nd/4.0/).
