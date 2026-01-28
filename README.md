@@ -29,7 +29,7 @@ Este es un portfolio personal y profesional desarrollado con **Bootstrap 5**. La
 ## Cómo ver la página
 
 1. Visualiza este repositorio en línea.
-2. Abre `samutech.eu` en tu navegador.
+2. Abre [samutech.eu](https://samutech.eu) en tu navegador.
 3. Navega por las distintas secciones a través del menú de navegación.
 
 ## Restricciones
