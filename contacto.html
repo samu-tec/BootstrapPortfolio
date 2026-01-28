@@ -1,228 +1,196 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Contacto</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <style>
-      .bg-primary {
-        background-color: #ff7f0e !important;
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Contacto</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    .bg-primary {
+      background-color: #ff7f0e !important;
+    }
+
+    .btn-primary {
+      background-color: #ff7f0e !important;
+      border-color: #ff7f0e !important;
+    }
+
+    .btn-primary:hover {
+      background-color: #e67300 !important;
+      border-color: #e67300 !important;
+      transition: background-color 0.3s ease;
+    }
+
+    .footer {
+      background-color: #ff7f0e;
+      color: #fff;
+      padding: 1rem 0;
+    }
+
+    .error {
+      color: #dc3545;
+      font-size: 0.9em;
+    }
+
+    .form-cuadrado {
+      border: 2px solid #ff7f0e;
+      padding: 20px;
+      width: 100%;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+    }
+
+    .contador-envio {
+      margin-left: 15px;
+      font-size: 0.9em;
+      color: #555;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .contador-envio span {
+      font-weight: bold;
+      color: #ff7f0e;
+      display: inline-block;
+      min-width: 20px;
+      text-align: center;
+      animation: pulse 1s infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
       }
-      .btn-primary {
-        background-color: #ff7f0e !important;
-        border-color: #ff7f0e !important;
+
+      50% {
+        transform: scale(1.2);
       }
-      .btn-primary:hover {
-        background-color: #e67300 !important;
-        border-color: #e67300 !important;
-        transition: background-color 0.3s ease;
+
+      100% {
+        transform: scale(1);
       }
-      .footer {
-        background-color: #ff7f0e;
-        color: #fff;
-        padding: 1rem 0;
-      }
-      .error {
-        color: #dc3545;
-        font-size: 0.9em;
-      }
-      .form-cuadrado {
-        border: 2px solid #ff7f0e;
-        padding: 20px;
-        width: 100%;
-        background-color: #f9f9f9;
-        border-radius: 8px;
-      }
-      .form-cuadrado .form-label {
-        font-weight: bold;
-      }
-      .form-cuadrado .form-control {
-        border-radius: 4px;
-        border: 1px solid #ccc;
-        padding: 12px;
-      }
-      .form-cuadrado .btn-primary {
-        background-color: #ff7f0e;
-        border-color: #ff7f0e;
-        padding: 10px 20px;
-        border-radius: 4px;
-      }
-      .form-cuadrado .btn-primary:hover {
-        background-color: #e67300;
-        border-color: #e67300;
-      }
-    </style>
-  </head>
-  <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-      <div class="container">
-        <a class="navbar-brand" href="index.html">Inicio</a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Alternar navegación"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav ms-auto">
-            <li class="nav-item">
-              <a class="nav-link" href="sobremi.html">Sobre mí</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="profesional.html">Profesional</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link active" href="contacto.html">Contacto</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-    <div class="container my-5">
-      <h1 class="mb-4">Contacto</h1>
-      <p class="lead">
-        Si tienes alguna duda o deseas contactarme, completa el siguiente
-        formulario:
-      </p>
-      <div class="form-cuadrado">
-        <form id="contactForm" novalidate>
-          <div class="mb-3">
-            <label for="nombre" class="form-label">Nombre</label>
-            <input
-              type="text"
-              class="form-control"
-              id="nombre"
-              name="nombre"
-              required
-              aria-describedby="errorNombre"
-            />
-            <div id="errorNombre" class="error"></div>
-          </div>
-          <div class="mb-3">
-            <label for="apellidos" class="form-label">Apellidos</label>
-            <input
-              type="text"
-              class="form-control"
-              id="apellidos"
-              name="apellidos"
-              required
-              aria-describedby="errorApellidos"
-            />
-            <div id="errorApellidos" class="error"></div>
-          </div>
-          <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input
-              type="email"
-              class="form-control"
-              id="email"
-              name="email"
-              required
-              aria-describedby="errorEmail"
-            />
-            <div id="errorEmail" class="error"></div>
-          </div>
-          <div class="mb-3">
-            <label for="mensaje" class="form-label">Mensaje</label>
-            <textarea
-              class="form-control"
-              id="mensaje"
-              name="mensaje"
-              rows="5"
-              required
-              aria-describedby="errorMensaje"
-            ></textarea>
-            <div id="errorMensaje" class="error"></div>
-          </div>
-          <button type="submit" class="btn btn-primary">Enviar</button>
-        </form>
-      </div>
-      <div id="formResult" class="mt-3"></div>
-      <div class="mt-5">
-        <h2 class="mb-3">Información de Contacto</h2>
-        <p><strong>Correo:</strong> samutech@duck.com</p>
-        <p><strong>Redes sociales:</strong> @Samu_Tech</p>
-        <p><strong>Dirección:</strong> Roquetas de Mar, Almería, España</p>
-      </div>
-      <div class="mt-4">
-        <h2 class="mb-3">Ubicación</h2>
-        <div class="ratio ratio-16x9">
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d51152.466923381246!2d-2.6629595787805305!3d36.74587059895194!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd70701c1ac6a79f%3A0xf7091f15d97f0d61!2s04740%20Roquetas%20de%20Mar%2C%20Almer%C3%ADa!5e0!3m2!1ses!2ses!4v1741595337713!5m2!1ses!2ses"
-            width="600"
-            height="450"
-            style="border: 0"
-            allowfullscreen=""
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-          ></iframe>
-        </div>
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">Inicio</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="sobremi.html">Sobre mí</a></li>
+          <li class="nav-item"><a class="nav-link" href="profesional.html">Profesional</a></li>
+          <li class="nav-item"><a class="nav-link active" href="contacto.html">Contacto</a></li>
+        </ul>
       </div>
     </div>
-    <footer class="footer text-center">
-      <div class="container">
-        <p class="mb-0">
-          &copy; 2025 Mi Portfolio. Todos los derechos reservados.
-        </p>
+  </nav>
+
+  <div class="container my-5">
+    <h1 class="mb-4">Contacto</h1>
+    <p class="lead">Si tienes alguna duda o deseas contactarme, completa el siguiente formulario:</p>
+
+    <div class="form-cuadrado">
+      <form id="contactForm" action="https://formsubmit.co/9c827da4e0bf147bb5e9afeb3b237d63" method="POST" novalidate>
+        <input type="hidden" name="_subject" value="Nuevo mensaje desde el portfolio">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_template" value="table">
+
+        <div class="mb-3">
+          <label for="nombre" class="form-label">Nombre</label>
+          <input type="text" class="form-control" id="nombre" name="nombre" required>
+          <div id="errorNombre" class="error"></div>
+        </div>
+
+        <div class="mb-3">
+          <label for="apellidos" class="form-label">Apellidos</label>
+          <input type="text" class="form-control" id="apellidos" name="apellidos" required>
+          <div id="errorApellidos" class="error"></div>
+        </div>
+
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" class="form-control" id="email" name="email" required>
+          <div id="errorEmail" class="error"></div>
+        </div>
+
+        <div class="mb-3">
+          <label for="mensaje" class="form-label">Mensaje</label>
+          <textarea class="form-control" id="mensaje" name="mensaje" rows="5" required></textarea>
+          <div id="errorMensaje" class="error"></div>
+        </div>
+
+        <div class="d-flex align-items-center">
+          <button type="submit" class="btn btn-primary">Enviar</button>
+          <div id="contadorEnvio" class="contador-envio">
+            Serás reenviado a FormSubmit en <span id="segundos">5</span>s
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="mt-5">
+      <h2 class="mb-3">Información de Contacto</h2>
+      <p><strong>Correo:</strong> samutech.eu@gmail.com</p>
+      <p><strong>Redes sociales:</strong> <a href="https://linktr.ee/Samu_Tech">@Samu_Tech</a></p>
+      <p><strong>Dirección:</strong> Roquetas de Mar, Almería, España</p>
+    </div>
+
+    <div class="mt-4">
+      <h2 class="mb-3">Ubicación</h2>
+      <div class="ratio ratio-16x9">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d51152.466923381246!2d-2.6629595787805305!3d36.74587059895194!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd70701c1ac6a79f%3A0xf7091f15d97f0d61!2s04740%20Roquetas%20de%20Mar%2C%20Almer%C3%ADa!5e0!3m2!1ses!2ses!4v1741595337713!5m2!1ses!2ses"
+          style="border:0;" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
       </div>
-    </footer>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-      document
-        .getElementById("contactForm")
-        .addEventListener("submit", function (e) {
-          e.preventDefault();
-          let valid = true;
-          document.getElementById("errorNombre").textContent = "";
-          document.getElementById("errorApellidos").textContent = "";
-          document.getElementById("errorEmail").textContent = "";
-          document.getElementById("errorMensaje").textContent = "";
-          const nombre = document.getElementById("nombre").value.trim();
-          if (nombre === "") {
-            document.getElementById("errorNombre").textContent =
-              "El nombre es obligatorio.";
-            valid = false;
-          }
-          const apellidos = document.getElementById("apellidos").value.trim();
-          if (apellidos === "") {
-            document.getElementById("errorApellidos").textContent =
-              "Los apellidos son obligatorios.";
-            valid = false;
-          }
-          const email = document.getElementById("email").value.trim();
-          if (email === "") {
-            document.getElementById("errorEmail").textContent =
-              "El email es obligatorio.";
-            valid = false;
-          } else if (!/^\S+@\S+\.\S+$/.test(email)) {
-            document.getElementById("errorEmail").textContent =
-              "Introduce un email válido.";
-            valid = false;
-          }
-          const mensaje = document.getElementById("mensaje").value.trim();
-          if (mensaje === "") {
-            document.getElementById("errorMensaje").textContent =
-              "El mensaje es obligatorio.";
-            valid = false;
-          }
-          if (valid) {
-            document.getElementById("formResult").innerHTML =
-              '<div class="alert alert-success">Formulario enviado correctamente.</div>';
-            document.getElementById("contactForm").reset();
-            setTimeout(function () {
-              document.getElementById("formResult").innerHTML = "";
-            }, 10000);
-          }
-        });
-    </script>
-  </body>
+    </div>
+  </div>
+
+  <footer class="footer text-center">
+    <div class="container">
+      <p class="mb-0">&copy; samutech.eu</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    document.getElementById("contactForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      let valid = true;
+      errorNombre.textContent = "";
+      errorApellidos.textContent = "";
+      errorEmail.textContent = "";
+      errorMensaje.textContent = "";
+
+      if (!nombre.value.trim()) { errorNombre.textContent = "El nombre es obligatorio."; valid = false; }
+      if (!apellidos.value.trim()) { errorApellidos.textContent = "Los apellidos son obligatorios."; valid = false; }
+      if (!email.value.trim() || !/^\S+@\S+\.\S+$/.test(email.value)) { errorEmail.textContent = "Introduce un email válido."; valid = false; }
+      if (!mensaje.value.trim()) { errorMensaje.textContent = "El mensaje es obligatorio."; valid = false; }
+
+      if (!valid) return;
+
+      let segundos = 5;
+      const contador = document.getElementById("contadorEnvio");
+      const span = document.getElementById("segundos");
+      contador.style.opacity = "1";
+
+      const interval = setInterval(() => {
+        segundos--;
+        span.textContent = segundos;
+        if (segundos === 0) {
+          clearInterval(interval);
+          this.submit();
+        }
+      }, 1000);
+    });
+  </script>
+</body>
+
 </html>
