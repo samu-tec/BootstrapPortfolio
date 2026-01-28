@@ -17,6 +17,7 @@ Este es un portfolio personal y profesional desarrollado con **Bootstrap 5**. La
 - CSS3
 - Bootstrap 5
 - JavaScript
+- FormSubmit
 
 ## Estructura del proyecto
 
@@ -25,10 +26,10 @@ Este es un portfolio personal y profesional desarrollado con **Bootstrap 5**. La
 - `profesional.html` - Sección con detalles de formación y experiencia.
 - `contacto.html` - Formulario de contacto funcional.
 
-## Cómo usar
+## Cómo ver la página
 
 1. Visualiza este repositorio en línea.
-2. Abre el archivo `index.html` en tu navegador.
+2. Abre `samutech.eu` en tu navegador.
 3. Navega por las distintas secciones a través del menú de navegación.
 
 ## Restricciones
