@@ -113,7 +113,7 @@ function renderHome() {
     depth: 0,
     bodyClass: "home-page",
     body: `
-      <section class="hero section-shell">
+      <section class="hero section-shell" data-parallax-root>
         <div class="hero__content reveal">
           <p class="eyebrow">Portfolio personal</p>
           <h1>${escapeHtml(profile.name)}</h1>
@@ -132,23 +132,59 @@ function renderHome() {
           </dl>
         </div>
 
-        <div class="hero__visual reveal" aria-label="Presentación visual de Samuel Ciocan">
-          <div class="portrait-stage">
-            <img src="${asset("assets/img/samuel-ciocan.png", 0)}" alt="Foto de Samuel Ciocan" width="760" height="760" decoding="async" fetchpriority="high">
-            <div class="status-card" aria-label="Estado profesional">
+        <div class="hero__visual reveal" aria-label="Visualización abstracta del stack de Samuel Ciocan">
+          <div class="orbit-stage">
+            <canvas data-hero-canvas aria-hidden="true"></canvas>
+            <div class="orbit-fallback" aria-hidden="true">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <div class="hero__badge hero__badge--top" aria-label="Estado profesional">
               <span class="status-dot" aria-hidden="true"></span>
               <span>Construyendo proyectos web</span>
             </div>
-          </div>
-          <div class="code-panel" aria-label="Resumen en formato código">
-            <span class="code-panel__bar"></span>
-            <pre><code>const developer = {
-  name: "Samuel Ciocan",
-  role: "Full Stack Web Developer",
-  focus: "Frontend + Backend"
-};</code></pre>
+            <div class="hero__badge hero__badge--bottom" aria-label="Stack principal">
+              <code>full · stack · web</code>
+            </div>
           </div>
         </div>
+      </section>
+
+      <section class="section-shell about-section">
+        <div class="about-portrait reveal" aria-hidden="true">
+          <img src="${asset("assets/img/samuel-ciocan.png", 0)}" alt="" width="760" height="760" decoding="async" fetchpriority="high">
+          <div class="about-portrait__chip">
+            <span class="status-dot" aria-hidden="true"></span>
+            <span>Desarrollador en crecimiento</span>
+          </div>
+        </div>
+        <div class="about-content reveal">
+          <p class="eyebrow">Sobre mí</p>
+          <h2>Código claro, decisiones cuidadas y proyectos reales.</h2>
+          <p>${escapeHtml(profile.about)}</p>
+          <div class="code-panel" aria-label="Resumen en formato código">
+            <span class="code-panel__bar" aria-hidden="true"></span>
+            <pre><code><span class="tk-key">const</span> developer = {
+  <span class="tk-key">name</span>: <span class="tk-str">"Samuel Ciocan"</span>,
+  <span class="tk-key">role</span>: <span class="tk-str">"Full Stack Web Developer"</span>,
+  <span class="tk-key">focus</span>: [<span class="tk-str">"Frontend"</span>, <span class="tk-str">"Backend"</span>, <span class="tk-str">"APIs"</span>]
+};</code></pre>
+          </div>
+          <div class="inline-actions">
+            ${buttonLink("Ver CV", "/cv/", 0, "secondary", "file")}
+            ${buttonLink("Contactar", "/links/#contacto", 0, "ghost", "mail")}
+          </div>
+        </div>
+      </section>
+
+      <section class="section-shell section-block">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Stack</p>
+          <h2>Tecnologías con las que construyo</h2>
+          <p>Las herramientas que uso a diario para crear interfaces limpias, mover datos, conectar APIs y desplegar aplicaciones web.</p>
+        </div>
+        ${techCloud(profile.technologies)}
       </section>
 
       <section class="section-shell section-block">
@@ -162,22 +198,17 @@ function renderHome() {
         </div>
       </section>
 
-      <section class="section-shell split-section">
-        <div class="surface-panel reveal">
-          <p class="eyebrow">Tecnologías</p>
-          <h2>Stack con el que estoy construyendo proyectos</h2>
-          <p>Tecnologías que uso y sigo reforzando para crear interfaces limpias, conectar datos, trabajar con APIs y desplegar aplicaciones web.</p>
-          ${tagList(profile.technologies)}
-        </div>
-        <div class="surface-panel surface-panel--accent reveal">
-          <p class="eyebrow">Enfoque</p>
-          <h2>Claridad visual, estructura limpia y criterio práctico</h2>
-          <p>Busco que cada proyecto sea fácil de entender, cómodo de usar en móvil y sencillo de seguir mejorando por dentro.</p>
+      <section class="section-shell">
+        <aside class="cta-final reveal" aria-label="Contacto">
+          <p class="eyebrow">Hablemos</p>
+          <h2>¿Tienes un proyecto web o una propuesta?</h2>
+          <p>Estoy disponible para colaboraciones, prácticas y proyectos web reales. Escríbeme al correo o usa los enlaces directos a perfiles profesionales.</p>
+          ${emailActions("Correo público")}
           <div class="inline-actions">
-            ${buttonLink("Ver CV", "/cv/", 0, "secondary", "file")}
-            ${buttonLink("Contactar", "/links/#contacto", 0, "primary", "mail")}
+            ${buttonLink("Enlaces y perfiles", "/links/", 0, "secondary", "grid")}
+            ${buttonLink("GitHub", profile.github, 0, "ghost", "github")}
           </div>
-        </div>
+        </aside>
       </section>
     `
   });
@@ -287,7 +318,7 @@ function renderCv() {
         <div class="surface-panel reveal">
           <h2>Tecnologías</h2>
           <p class="panel-intro">Tecnologías que uso y sigo reforzando en proyectos frontend, backend y despliegue web.</p>
-          ${tagList(profile.technologies, { variant: "interactive", label: "Tecnologías que uso y sigo reforzando" })}
+          ${techCloud(profile.technologies)}
         </div>
         <div class="surface-panel reveal">
           <h2>Habilidades</h2>
@@ -345,11 +376,12 @@ function layout({ title, description, active, route, depth, body, bodyClass }) {
   <meta name="twitter:description" content="${escapeAttribute(description)}">
   <meta name="twitter:image" content="${escapeAttribute(image)}">
   <meta name="twitter:image:alt" content="${escapeAttribute(profile.seo.imageAlt)}">
+  <script>document.documentElement.classList.add("js-enabled");</script>
   <link rel="icon" href="${asset("favicon.svg", depth)}" type="image/svg+xml">
   <link rel="manifest" href="${asset("site.webmanifest", depth)}">
   <link rel="preload" href="${asset("assets/css/styles.css", depth)}" as="style">
   <link rel="stylesheet" href="${asset("assets/css/styles.css", depth)}">
-  <script defer src="${asset("assets/js/main.js", depth)}"></script>
+  <script type="module" src="${asset("assets/js/main.js", depth)}"></script>
 </head>
 <body class="${escapeAttribute(bodyClass)}">
   <a class="skip-link" href="#contenido">Saltar al contenido</a>
@@ -412,10 +444,15 @@ function siteFooter(depth) {
 }
 
 function projectCard(project, depth) {
+  const status = project.status
+    ? `<span class="project-card__status">${escapeHtml(project.status)}</span>`
+    : "";
+
   return `
-    <article class="project-card reveal">
+    <article class="project-card reveal" data-tilt>
       <div class="project-card__top">
         <span class="project-card__type">${escapeHtml(project.type)}</span>
+        ${status}
       </div>
       <h3>${escapeHtml(project.name)}</h3>
       <p>${escapeHtml(project.description)}</p>
@@ -424,6 +461,14 @@ function projectCard(project, depth) {
         ${buttonLink(project.cta, project.repoUrl, depth, "primary compact", "github")}
       </div>
     </article>
+  `;
+}
+
+function techCloud(items) {
+  return `
+    <ul class="tech-cloud" aria-label="Tecnologías" data-floating-tags>
+      ${items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+    </ul>
   `;
 }
 
@@ -473,21 +518,10 @@ function emailActions(label, options = {}) {
   `;
 }
 
-function tagList(tags, options = {}) {
-  const interactive = options.variant === "interactive";
-  const classes = ["tag-list", interactive ? "tag-list--interactive" : ""]
-    .filter(Boolean)
-    .join(" ");
-  const label = options.label || "Tecnologías";
-
+function tagList(tags) {
   return `
-    <ul class="${classes}" aria-label="${escapeAttribute(label)}">
-      ${tags
-      .map((tag, index) => {
-        const attrs = interactive ? ` style="--tag-index: ${index};"` : "";
-        return `<li${attrs}>${escapeHtml(tag)}</li>`;
-      })
-      .join("")}
+    <ul class="tag-list" aria-label="Tecnologías">
+      ${tags.map((tag) => `<li>${escapeHtml(tag)}</li>`).join("")}
     </ul>
   `;
 }

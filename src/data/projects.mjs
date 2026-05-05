@@ -2,12 +2,13 @@ export const projects = [
   {
     slug: "friends4you",
     name: "Friends4You",
-    type: "Proyecto DAW",
+    type: "Aplicación web",
     description:
-      "Red social académica en PHP y MySQL para gestionar perfiles, intereses, amistades, eventos y colaboradores con acceso por roles.",
+      "Aplicación web orientada a facilitar que personas puedan conocer gente nueva mediante perfiles, intereses compartidos y quedadas o eventos.",
     technologies: ["PHP 8", "MySQL/MariaDB", "PDO", "HTML", "CSS", "JavaScript"],
     repoUrl: "https://github.com/samu-tec/Friends4You",
     cta: "Ver repositorio",
+    status: "Proyecto DAW",
     featured: true
   },
   {
@@ -15,10 +16,11 @@ export const projects = [
     name: "Discord-RAG-Bot",
     type: "Bot RAG para Discord",
     description:
-      "Bot configurable para Discord que responde con documentos locales mediante RAG, ChromaDB y modelos de Ollama, pensado para hardware modesto.",
+      "Bot de Discord con arquitectura RAG para responder preguntas usando una base de conocimiento local con Ollama y ChromaDB.",
     technologies: ["Python", "discord.py", "ChromaDB", "Ollama", "RAG", "Slash commands"],
     repoUrl: "https://github.com/samu-tec/Discord-RAG-Bot",
     cta: "Ver repositorio",
+    status: "Proyecto personal",
     featured: true
   },
   {
@@ -26,10 +28,11 @@ export const projects = [
     name: "PokeAPI",
     type: "Aplicación Angular",
     description:
-      "Aplicación de clase hecha con Angular para explorar Pokémon consumiendo datos e imágenes desde APIs, practicando componentes, servicios y rutas.",
+      "Proyecto web de práctica para consumir datos de una API externa y mostrarlos en una interfaz dinámica con componentes, servicios y rutas.",
     technologies: ["Angular", "TypeScript", "HTML", "CSS", "API REST", "GitHub Pages"],
     repoUrl: "https://github.com/samu-tec/PokeAPI",
     cta: "Ver repositorio",
+    status: "Proyecto académico",
     featured: true
   },
   {
@@ -37,10 +40,11 @@ export const projects = [
     name: "Portfolio personal",
     type: "Web personal",
     description:
-      "Esta propia web, creada como punto central para presentar proyectos, CV, enlaces profesionales y formas de contacto.",
+      "Web personal creada para centralizar proyectos, CV, contacto y enlaces profesionales, desplegada en Cloudflare.",
     technologies: ["HTML", "CSS", "JavaScript", "Node.js", "Cloudflare"],
     repoUrl: "https://github.com/samu-tec/portfolio",
     cta: "Ver repositorio",
+    status: "En evolución",
     featured: false
   }
 ];
