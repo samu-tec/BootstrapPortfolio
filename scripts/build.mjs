@@ -16,26 +16,33 @@ const publicDir = path.join(rootDir, "public");
 
 const navItems = [
   { label: "Inicio", href: "/", active: "home" },
-  { label: "Links", href: "/links/", active: "links" },
+  { label: "Enlaces", href: "/links/", active: "links" },
   { label: "Proyectos", href: "/proyectos/", active: "projects" },
   { label: "CV", href: "/cv/", active: "cv" }
 ];
 
 const pages = ["/", "/links/", "/proyectos/", "/cv/"];
 
+const projectRepoRedirects = projects
+  .filter((project) => project.featured && project.repoUrl)
+  .flatMap((project) => [
+    [`/${project.slug}`, project.repoUrl, 302],
+    [`/proyectos/${project.slug}/`, project.repoUrl, 302]
+  ]);
+
 const shortRedirects = [
   ["/github", profile.github, 302],
   ["/linkedin", profile.linkedin, 302],
   ["/telegram", profile.telegram, 302],
-  ["/friends4you", "https://github.com/samu-tec/Friends4You", 302],
-  ["/discord-rag-bot", "https://github.com/samu-tec/Discord-RAG-Bot", 302],
-  ["/pokeapi", "https://github.com/samu-tec/PokeAPI", 302],
-  ["/proyectos/friends4you/", "https://github.com/samu-tec/Friends4You", 302],
-  ["/proyectos/discord-rag-bot/", "https://github.com/samu-tec/Discord-RAG-Bot", 302],
-  ["/proyectos/pokeapi/", "https://github.com/samu-tec/PokeAPI", 302],
-  ["/contacto", "/links/", 302],
-  ["/contacto/", "/links/", 302],
+  ...projectRepoRedirects,
+  ["/contacto", "/links/", 301],
+  ["/contacto/", "/links/", 301],
   ["/contacto.html", "/links/", 301],
+  ["/CV", "/cv/", 301],
+  ["/CV/", "/cv/", 301],
+  ["/Cv", "/cv/", 301],
+  ["/Links", "/links/", 301],
+  ["/Proyectos", "/proyectos/", 301],
   ["/profesional.html", "/cv/", 301],
   ["/sobremi.html", "/", 301],
   ["/index.html", "/", 301]
@@ -44,10 +51,10 @@ const shortRedirects = [
 export function build() {
   resetDist();
   copyStaticAssets();
-  writePage("index.html", renderHome());
-  writePage("links/index.html", renderLinks());
-  writePage("proyectos/index.html", renderProjects());
-  writePage("cv/index.html", renderCv());
+  writeText("index.html", renderHome());
+  writeText("links/index.html", renderLinks());
+  writeText("proyectos/index.html", renderProjects());
+  writeText("cv/index.html", renderCv());
 
   writeText("_redirects", renderRedirects());
   writeText("robots.txt", renderRobots());
@@ -92,10 +99,6 @@ function copyDir(from, to) {
   }
 }
 
-function writePage(relativePath, html) {
-  writeText(relativePath, html);
-}
-
 function writeText(relativePath, content) {
   const outPath = path.join(distDir, relativePath);
   fs.mkdirSync(path.dirname(outPath), { recursive: true });
@@ -113,16 +116,16 @@ function renderHome() {
     depth: 0,
     bodyClass: "home-page",
     body: `
-      <section class="hero section-shell" data-parallax-root>
+      <section class="hero section-shell">
         <div class="hero__content reveal">
-          <p class="eyebrow">Portfolio personal</p>
-          <h1>${escapeHtml(profile.name)}</h1>
+          ${eyebrow("Portfolio personal", "spark")}
+          <h1 class="name-gradient">${escapeHtml(profile.name)}</h1>
           <p class="hero__role">${escapeHtml(profile.role)}</p>
           <p class="hero__intro">${escapeHtml(profile.intro)}</p>
           <div class="hero__actions" aria-label="Acciones principales">
             ${buttonLink("Ver proyectos", "/proyectos/", 0, "primary", "grid")}
             ${buttonLink("Ver CV", "/cv/", 0, "secondary", "file")}
-            ${buttonLink("Contactar", "/links/#contacto", 0, "ghost", "mail")}
+            ${buttonLink("Enlaces", "/links/", 0, "ghost", "spark")}
             ${buttonLink("GitHub", profile.github, 0, "ghost", "github")}
           </div>
           <dl class="hero__facts" aria-label="Resumen rápido">
@@ -132,7 +135,19 @@ function renderHome() {
           </dl>
         </div>
 
-        <div class="hero__visual reveal" aria-label="Visualización abstracta del stack de Samuel Ciocan">
+        <div class="hero__visual reveal">
+          <figure class="about-portrait">
+            <img src="${asset("assets/img/samuel-ciocan.png", 0)}" alt="Foto de Samuel Ciocan" width="760" height="760" decoding="async" fetchpriority="high">
+            <figcaption class="about-portrait__chip">
+              <span class="status-dot" aria-hidden="true"></span>
+              <span>Desarrollador en <span class="growth-word"><span class="sr-only">crecimiento</span>${animatedLetters("crecimiento")}</span>.</span>
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="section-shell about-section">
+        <div class="about-visual reveal" aria-label="Visualización abstracta del stack de Samuel Ciocan">
           <div class="orbit-stage">
             <canvas data-hero-canvas aria-hidden="true"></canvas>
             <div class="orbit-fallback" aria-hidden="true">
@@ -142,27 +157,19 @@ function renderHome() {
             </div>
             <div class="hero__badge hero__badge--top" aria-label="Estado profesional">
               <span class="status-dot" aria-hidden="true"></span>
-              <span>Construyendo proyectos web</span>
+              <span>Disponible para proyectos</span>
             </div>
             <div class="hero__badge hero__badge--bottom" aria-label="Stack principal">
               <code>full · stack · web</code>
             </div>
           </div>
         </div>
-      </section>
-
-      <section class="section-shell about-section">
-        <div class="about-portrait reveal" aria-hidden="true">
-          <img src="${asset("assets/img/samuel-ciocan.png", 0)}" alt="" width="760" height="760" decoding="async" fetchpriority="high">
-          <div class="about-portrait__chip">
-            <span class="status-dot" aria-hidden="true"></span>
-            <span>Desarrollador en crecimiento</span>
-          </div>
-        </div>
         <div class="about-content reveal">
-          <p class="eyebrow">Sobre mí</p>
-          <h2>Código claro, decisiones cuidadas y proyectos reales.</h2>
-          <p>${escapeHtml(profile.about)}</p>
+          <div class="about-copy">
+            ${eyebrow("Sobre mí", "user")}
+            <h2>Código claro, decisiones cuidadas y proyectos reales.</h2>
+            <p>${escapeHtml(profile.about)}</p>
+          </div>
           <div class="code-panel" aria-label="Resumen en formato código">
             <span class="code-panel__bar" aria-hidden="true"></span>
             <pre><code><span class="tk-key">const</span> developer = {
@@ -171,16 +178,12 @@ function renderHome() {
   <span class="tk-key">focus</span>: [<span class="tk-str">"Frontend"</span>, <span class="tk-str">"Backend"</span>, <span class="tk-str">"APIs"</span>]
 };</code></pre>
           </div>
-          <div class="inline-actions">
-            ${buttonLink("Ver CV", "/cv/", 0, "secondary", "file")}
-            ${buttonLink("Contactar", "/links/#contacto", 0, "ghost", "mail")}
-          </div>
         </div>
       </section>
 
       <section class="section-shell section-block">
         <div class="section-heading reveal">
-          <p class="eyebrow">Stack</p>
+          ${eyebrow("Stack", "code")}
           <h2>Tecnologías con las que construyo</h2>
           <p>Las herramientas que uso a diario para crear interfaces limpias, mover datos, conectar APIs y desplegar aplicaciones web.</p>
         </div>
@@ -189,25 +192,23 @@ function renderHome() {
 
       <section class="section-shell section-block">
         <div class="section-heading reveal">
-          <p class="eyebrow">Proyectos</p>
-          <h2>Proyectos reales para seguir creciendo</h2>
-          <p>Repositorios donde practico desarrollo frontend, backend, consumo de APIs y organización de código con una base técnica cada vez más sólida.</p>
+          ${eyebrow("Proyectos", "grid")}
+          <h2>Algunos proyectos destacados</h2>
+          <p>Estos son algunos de mis proyectos. En la página de proyectos puedes ver más repositorios y detalles.</p>
         </div>
         <div class="project-grid project-grid--featured">
           ${featuredProjects.map((project) => projectCard(project, 0)).join("")}
         </div>
       </section>
 
-      <section class="section-shell">
-        <aside class="cta-final reveal" aria-label="Contacto">
-          <p class="eyebrow">Hablemos</p>
-          <h2>¿Tienes un proyecto web o una propuesta?</h2>
-          <p>Estoy disponible para colaboraciones, prácticas y proyectos web reales. Escríbeme al correo o usa los enlaces directos a perfiles profesionales.</p>
-          ${emailActions("Correo público")}
-          <div class="inline-actions">
-            ${buttonLink("Enlaces y perfiles", "/links/", 0, "secondary", "grid")}
-            ${buttonLink("GitHub", profile.github, 0, "ghost", "github")}
-          </div>
+      <section class="section-shell section-block">
+        <div class="contact-heading reveal">
+          ${eyebrow("Contacto", "mail")}
+        </div>
+        <aside class="cta-final reveal" aria-label="Correo de contacto">
+          <h2>¿Quieres hablar de un proyecto?</h2>
+          <p>Disponible para prácticas, colaboraciones y proyectos web. Puedes escribirme directamente al correo.</p>
+          ${emailActions()}
         </aside>
       </section>
     `
@@ -216,21 +217,20 @@ function renderHome() {
 
 function renderLinks() {
   return layout({
-    title: `${profile.name} | Links`,
+    title: `${profile.name} | Enlaces`,
     description:
-      "Enlaces principales de Samuel Ciocan: proyectos, CV, GitHub, LinkedIn, Telegram y contacto profesional.",
+      "Enlaces principales de Samuel Ciocan: proyectos, CV, GitHub, LinkedIn, Telegram y contacto.",
     active: "links",
     route: "/links/",
     depth: 1,
-    bodyClass: "links-page",
     body: `
       <section class="links-hero">
         <div class="link-card-main reveal">
           <img src="${asset("assets/img/samuel-ciocan.png", 1)}" alt="Foto de Samuel Ciocan" width="220" height="220" decoding="async">
-          <p class="eyebrow">Enlaces profesionales</p>
-          <h1>${escapeHtml(profile.name)}</h1>
-          <p>${escapeHtml(profile.role)} · proyectos, CV, contacto y repositorios.</p>
-          ${emailActions("Correo público", { id: "contacto" })}
+          <p class="eyebrow">Enlaces</p>
+          <h1 class="name-gradient">${escapeHtml(profile.name)}</h1>
+          <p>${escapeHtml(profile.role)} · proyectos, CV, perfiles y contacto.</p>
+          ${emailActions({ id: "contacto" })}
         </div>
 
         <div class="links-stack">
@@ -289,16 +289,16 @@ function renderCv() {
     active: "cv",
     route: "/cv/",
     depth: 1,
-    bodyClass: "cv-page",
     body: `
       <section class="page-hero section-shell reveal">
         <p class="eyebrow">Currículum web</p>
-        <h1>${escapeHtml(profile.name)}</h1>
+        <h1 class="name-gradient">${escapeHtml(profile.name)}</h1>
         <p>${escapeHtml(cv.headline)}</p>
         <div class="inline-actions">
           ${buttonLink("Contactar", "#contacto", 1, "primary", "mail")}
           ${buttonLink("Ver proyectos", "/proyectos/", 1, "secondary", "grid")}
           ${buttonLink("GitHub", profile.github, 1, "ghost", "github")}
+          ${buttonLink("LinkedIn", profile.linkedin, 1, "ghost", "linkedin")}
         </div>
       </section>
 
@@ -332,23 +332,20 @@ function renderCv() {
           <h2>Proyectos destacados</h2>
           ${featureList(featured.map((project) => `${project.name}: ${project.description}`))}
         </div>
-        <div class="surface-panel surface-panel--wide reveal" id="contacto">
+        <div class="surface-panel surface-panel--wide surface-panel--center reveal" id="contacto">
           <h2>Contacto</h2>
           <p>Disponible para conversaciones profesionales, prácticas, colaboraciones y proyectos web.</p>
-          ${emailActions("Correo público")}
-          <div class="inline-actions">
-            ${buttonLink("GitHub", profile.github, 1, "secondary", "github")}
-            ${buttonLink("LinkedIn", profile.linkedin, 1, "ghost", "linkedin")}
-          </div>
+          ${emailActions()}
         </div>
       </section>
     `
   });
 }
 
-function layout({ title, description, active, route, depth, body, bodyClass }) {
+function layout({ title, description, active, route, depth, body, bodyClass = "" }) {
   const canonical = canonicalUrl(route);
   const image = canonicalUrl(`/${profile.seo.image}`);
+  const bodyClassAttribute = bodyClass ? ` class="${escapeAttribute(bodyClass)}"` : "";
 
   return `<!doctype html>
 <html lang="es">
@@ -383,7 +380,7 @@ function layout({ title, description, active, route, depth, body, bodyClass }) {
   <link rel="stylesheet" href="${asset("assets/css/styles.css", depth)}">
   <script type="module" src="${asset("assets/js/main.js", depth)}"></script>
 </head>
-<body class="${escapeAttribute(bodyClass)}">
+<body${bodyClassAttribute}>
   <a class="skip-link" href="#contenido">Saltar al contenido</a>
   ${siteHeader(active, depth)}
   <main id="contenido">
@@ -426,17 +423,16 @@ function siteHeader(active, depth) {
 }
 
 function siteFooter(depth) {
+  const year = new Date().getFullYear();
+
   return `
   <footer class="site-footer">
     <div class="footer-shell">
       <div>
-        <p>© ${escapeHtml(profile.name)}</p>
+        <p>© ${year} ${escapeHtml(profile.name)}</p>
       </div>
       <div class="footer-links" aria-label="Enlaces básicos">
-        <a href="${routeHref("/", depth)}">Inicio</a>
-        <a href="${routeHref("/links/", depth)}">Links</a>
-        <a href="${routeHref("/proyectos/", depth)}">Proyectos</a>
-        <a href="${routeHref("/cv/", depth)}">CV</a>
+        ${navItems.map((item) => `<a href="${routeHref(item.href, depth)}">${escapeHtml(item.label)}</a>`).join("")}
       </div>
     </div>
   </footer>
@@ -502,12 +498,21 @@ function buttonLink(label, href, depth, variant = "primary", iconName = "arrow-r
   return `<a ${attrs}>${icon(iconName)}<span>${escapeHtml(label)}</span></a>`;
 }
 
-function emailActions(label, options = {}) {
+function eyebrow(label, iconName) {
+  return `<p class="eyebrow eyebrow--icon"><span class="eyebrow__icon" aria-hidden="true">${icon(iconName)}</span><span>${escapeHtml(label)}</span></p>`;
+}
+
+function animatedLetters(value) {
+  return [...value]
+    .map((letter, index) => `<span aria-hidden="true" style="--letter-index: ${index}">${escapeHtml(letter)}</span>`)
+    .join("");
+}
+
+function emailActions(options = {}) {
   const idAttribute = options.id ? ` id="${escapeAttribute(options.id)}"` : "";
 
   return `
     <div class="email-actions"${idAttribute}>
-      <span class="email-actions__label">${escapeHtml(label)}</span>
       <a class="email-actions__address" href="mailto:${escapeAttribute(profile.email)}" aria-label="Enviar correo a ${escapeAttribute(profile.email)}">
         ${icon("mail")}<span>${escapeHtml(profile.email)}</span>
       </a>
@@ -681,6 +686,8 @@ function icon(name) {
       '<svg viewBox="0 0 24 24" focusable="false"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>',
     spark:
       '<svg viewBox="0 0 24 24" focusable="false"><path d="m12 2 2.2 6.8H21l-5.5 4 2.1 6.8-5.6-4.2-5.6 4.2 2.1-6.8L3 8.8h6.8z"/></svg>',
+    user:
+      '<svg viewBox="0 0 24 24" focusable="false"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><path d="M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"/></svg>',
     users:
       '<svg viewBox="0 0 24 24" focusable="false"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"/><path d="M22 21v-2a4 4 0 0 0-3-3.9"/><path d="M16 3.1a4 4 0 0 1 0 7.8"/></svg>'
   };

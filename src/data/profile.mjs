@@ -3,40 +3,41 @@ export const profile = {
   role: "Desarrollador Web Full Stack",
   domain: "https://samuelciocan.com",
   email: "contacto@samuelciocan.com",
-  github: "https://github.com/samu-tec/",
+  github: "https://github.com/samu-tec",
   linkedin: "https://www.linkedin.com/in/samuelciocan/",
   telegram: "https://t.me/Samu_Tech",
   intro:
-    "Creo aplicaciones web con interfaces cuidadas, lógica bien estructurada y una base técnica preparada para crecer.",
+    "Desarrollo aplicaciones web con interfaces cuidadas, estructura clara y atención al detalle.",
   about:
-    "Desarrollo proyectos full stack centrados en interfaces responsive, lógica backend organizada, integración con bases de datos y consumo de APIs. Me interesa el código mantenible, las pequeñas decisiones de UX que mejoran la experiencia y el aprendizaje constante mientras construyo cosas reales.",
+    "Trabajo el lado frontend y backend de aplicaciones web: interfaces responsive, lógica organizada, bases de datos y consumo de APIs. Me interesa el código mantenible y las pequeñas decisiones que hacen que un proyecto sea agradable de usar y fácil de seguir desarrollando.",
   profileSummary:
-    "Soy desarrollador web full stack en etapa de crecimiento, centrado en crear interfaces limpias, backends organizados y proyectos fáciles de mantener. Trabajo con tecnologías web actuales, bases de datos, APIs y despliegue, reforzando lo aprendido con proyectos reales y código pensado para seguir mejorando.",
+    "Estoy reforzando mi perfil full stack trabajando con frontend, backend, bases de datos y despliegue web. Uso este portfolio como punto central para mostrar mis proyectos, mi CV y mis enlaces profesionales.",
   seo: {
     title: "Samuel Ciocan | Desarrollador Web Full Stack",
     description:
-      "Portfolio personal de Samuel Ciocan, desarrollador web full stack. Proyectos, CV, contacto y enlaces profesionales.",
+      "Portfolio personal de Samuel Ciocan, desarrollador web full stack. Proyectos, CV y enlaces profesionales.",
     image: "assets/img/og-samuel-ciocan.png",
     imageAlt: "Samuel Ciocan - Desarrollador Web Full Stack",
     imageWidth: 1200,
     imageHeight: 627
   },
   technologies: [
-    "React",
-    "TypeScript",
+    "HTML",
+    "CSS",
     "JavaScript",
-    "Node.js",
+    "TypeScript",
+    "React",
     "PHP",
     "MySQL",
     "APIs REST",
-    "HTML",
-    "CSS",
-    "Git/GitHub",
+    "Node.js",
+    "Git",
+    "GitHub",
     "Cloudflare",
-    "Desarrollo frontend",
-    "Desarrollo backend",
     "Diseño responsive",
-    "Buenas prácticas",
+    "Frontend",
+    "Backend",
+    "Bases de datos",
     "Despliegue web"
-  ],
+  ]
 };

@@ -25,12 +25,12 @@ const ICOSAHEDRON_EDGES = (() => {
 
 export function initHeroScene(canvas) {
   if (!canvas || typeof window === "undefined") {
-    return null;
+    return;
   }
 
   const ctx = canvas.getContext("2d");
   if (!ctx) {
-    return null;
+    return;
   }
 
   const motionMedia = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -293,18 +293,6 @@ export function initHeroScene(canvas) {
   document.addEventListener("visibilitychange", handleVisibilityChange);
   motionMedia.addEventListener?.("change", handleMotionChange);
   hoverMedia.addEventListener?.("change", handleHoverChange);
-
-  return {
-    destroy() {
-      stop();
-      resizeObserver.disconnect();
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mouseleave", handleMouseLeave);
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
-      motionMedia.removeEventListener?.("change", handleMotionChange);
-      hoverMedia.removeEventListener?.("change", handleHoverChange);
-    }
-  };
 }
 
 function clamp(value, min, max) {

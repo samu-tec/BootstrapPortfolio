@@ -29,7 +29,7 @@ const expectedHomeMetadata = [
   '<meta property="og:type" content="website">',
   '<meta property="og:url" content="https://samuelciocan.com/">',
   '<meta property="og:title" content="Samuel Ciocan | Desarrollador Web Full Stack">',
-  '<meta property="og:description" content="Portfolio personal de Samuel Ciocan, desarrollador web full stack. Proyectos, CV, contacto y enlaces profesionales.">',
+  '<meta property="og:description" content="Portfolio personal de Samuel Ciocan, desarrollador web full stack. Proyectos, CV y enlaces profesionales.">',
   '<meta property="og:image" content="https://samuelciocan.com/assets/img/og-samuel-ciocan.png">',
   '<meta property="og:image:secure_url" content="https://samuelciocan.com/assets/img/og-samuel-ciocan.png">',
   '<meta property="og:image:type" content="image/png">',
@@ -38,7 +38,7 @@ const expectedHomeMetadata = [
   '<meta property="og:image:alt" content="Samuel Ciocan - Desarrollador Web Full Stack">',
   '<meta name="twitter:card" content="summary_large_image">',
   '<meta name="twitter:title" content="Samuel Ciocan | Desarrollador Web Full Stack">',
-  '<meta name="twitter:description" content="Portfolio personal de Samuel Ciocan, desarrollador web full stack. Proyectos, CV, contacto y enlaces profesionales.">',
+  '<meta name="twitter:description" content="Portfolio personal de Samuel Ciocan, desarrollador web full stack. Proyectos, CV y enlaces profesionales.">',
   '<meta name="twitter:image" content="https://samuelciocan.com/assets/img/og-samuel-ciocan.png">'
 ];
 

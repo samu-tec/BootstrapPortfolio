@@ -54,7 +54,7 @@ export const linkGroups = [
     items: [
       {
         label: "Friends4You",
-        description: "Red social DAW con roles y eventos",
+        description: "Aplicación web para conocer gente",
         href: projectBySlug.friends4you.repoUrl,
         kind: "external",
         icon: "users"
@@ -68,7 +68,7 @@ export const linkGroups = [
       },
       {
         label: "PokeAPI",
-        description: "Angular, servicios y API Pokémon",
+        description: "Web de práctica con la PokeAPI",
         href: projectBySlug.pokeapi.repoUrl,
         kind: "external",
         icon: "code"

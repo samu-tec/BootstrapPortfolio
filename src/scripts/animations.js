@@ -49,8 +49,6 @@ export function initTilt(cards) {
     return;
   }
 
-  const handlers = new WeakMap();
-
   cards.forEach((card) => {
     let frameId = null;
     let pendingX = 0;
@@ -97,76 +95,7 @@ export function initTilt(cards) {
     card.addEventListener("mousemove", onMove);
     card.addEventListener("mouseenter", onEnter);
     card.addEventListener("mouseleave", onLeave);
-
-    handlers.set(card, () => {
-      card.removeEventListener("mousemove", onMove);
-      card.removeEventListener("mouseenter", onEnter);
-      card.removeEventListener("mouseleave", onLeave);
-      if (frameId !== null) {
-        window.cancelAnimationFrame(frameId);
-      }
-    });
   });
-
-  const onMotionChange = () => {
-    if (motionMedia.matches) {
-      cards.forEach((card) => {
-        card.style.removeProperty("--tilt-x");
-        card.style.removeProperty("--tilt-y");
-        card.style.removeProperty("--glow-x");
-        card.style.removeProperty("--glow-y");
-        const off = handlers.get(card);
-        if (off) off();
-      });
-    }
-  };
-
-  motionMedia.addEventListener?.("change", onMotionChange);
-}
-
-export function initParallaxBackdrop(target) {
-  if (!target) {
-    return;
-  }
-
-  const motionMedia = window.matchMedia("(prefers-reduced-motion: reduce)");
-  const hoverMedia = window.matchMedia("(hover: hover) and (pointer: fine)");
-
-  if (motionMedia.matches || !hoverMedia.matches) {
-    return;
-  }
-
-  let frameId = null;
-  let mx = 0;
-  let my = 0;
-  let smoothX = 0;
-  let smoothY = 0;
-
-  const update = () => {
-    smoothX += (mx - smoothX) * 0.05;
-    smoothY += (my - smoothY) * 0.05;
-    target.style.setProperty("--parallax-x", `${smoothX.toFixed(3)}px`);
-    target.style.setProperty("--parallax-y", `${smoothY.toFixed(3)}px`);
-    if (Math.abs(smoothX - mx) > 0.05 || Math.abs(smoothY - my) > 0.05) {
-      frameId = window.requestAnimationFrame(update);
-    } else {
-      frameId = null;
-    }
-  };
-
-  window.addEventListener(
-    "mousemove",
-    (event) => {
-      const w = window.innerWidth || 1;
-      const h = window.innerHeight || 1;
-      mx = ((event.clientX / w) - 0.5) * 14;
-      my = ((event.clientY / h) - 0.5) * 14;
-      if (frameId === null) {
-        frameId = window.requestAnimationFrame(update);
-      }
-    },
-    { passive: true }
-  );
 }
 
 export function initFloatingTags(list) {

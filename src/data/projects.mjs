@@ -4,8 +4,8 @@ export const projects = [
     name: "Friends4You",
     type: "Aplicación web",
     description:
-      "Aplicación web orientada a facilitar que personas puedan conocer gente nueva mediante perfiles, intereses compartidos y quedadas o eventos.",
-    technologies: ["PHP 8", "MySQL/MariaDB", "PDO", "HTML", "CSS", "JavaScript"],
+      "Aplicación web pensada para que personas puedan conocer gente nueva mediante perfiles, intereses compartidos y quedadas o eventos.",
+    technologies: ["PHP", "MySQL", "HTML", "CSS", "JavaScript"],
     repoUrl: "https://github.com/samu-tec/Friends4You",
     cta: "Ver repositorio",
     status: "Proyecto DAW",
@@ -14,10 +14,10 @@ export const projects = [
   {
     slug: "discord-rag-bot",
     name: "Discord-RAG-Bot",
-    type: "Bot RAG para Discord",
+    type: "Bot de Discord",
     description:
-      "Bot de Discord con arquitectura RAG para responder preguntas usando una base de conocimiento local con Ollama y ChromaDB.",
-    technologies: ["Python", "discord.py", "ChromaDB", "Ollama", "RAG", "Slash commands"],
+      "Bot de Discord con arquitectura RAG que responde preguntas usando una base de conocimiento local con Ollama y ChromaDB.",
+    technologies: ["Python", "discord.py", "ChromaDB", "Ollama"],
     repoUrl: "https://github.com/samu-tec/Discord-RAG-Bot",
     cta: "Ver repositorio",
     status: "Proyecto personal",
@@ -26,13 +26,13 @@ export const projects = [
   {
     slug: "pokeapi",
     name: "PokeAPI",
-    type: "Aplicación Angular",
+    type: "Proyecto web",
     description:
-      "Proyecto web de práctica para consumir datos de una API externa y mostrarlos en una interfaz dinámica con componentes, servicios y rutas.",
-    technologies: ["Angular", "TypeScript", "HTML", "CSS", "API REST", "GitHub Pages"],
+      "Proyecto web de práctica basado en la PokeAPI para consumir datos desde una API externa y mostrarlos en una interfaz dinámica.",
+    technologies: ["HTML", "CSS", "JavaScript", "API REST"],
     repoUrl: "https://github.com/samu-tec/PokeAPI",
     cta: "Ver repositorio",
-    status: "Proyecto académico",
+    status: "Proyecto de práctica",
     featured: true
   },
   {
@@ -40,11 +40,11 @@ export const projects = [
     name: "Portfolio personal",
     type: "Web personal",
     description:
-      "Web personal creada para centralizar proyectos, CV, contacto y enlaces profesionales, desplegada en Cloudflare.",
+      "Web personal creada para centralizar proyectos, CV y enlaces profesionales, desplegada en Cloudflare.",
     technologies: ["HTML", "CSS", "JavaScript", "Node.js", "Cloudflare"],
     repoUrl: "https://github.com/samu-tec/portfolio",
     cta: "Ver repositorio",
-    status: "En evolución",
+    status: "Activo",
     featured: false
   }
 ];

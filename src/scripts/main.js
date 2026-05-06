@@ -1,9 +1,8 @@
 import { initHeroScene } from "./hero-scene.js";
-import { initReveal, initTilt, initParallaxBackdrop, initFloatingTags } from "./animations.js";
+import { initReveal, initTilt, initFloatingTags } from "./animations.js";
 import { initCopyEmail } from "./copy-email.js";
 
 document.documentElement.classList.add("has-js");
-document.documentElement.classList.add("js-enabled");
 
 const navToggle = document.querySelector(".nav-toggle");
 const navLinks = document.querySelector(".nav-links");
@@ -22,14 +21,8 @@ if (navToggle && navLinks) {
   });
 }
 
-const revealItems = document.querySelectorAll(".reveal");
-initReveal(revealItems);
-
-const tiltCards = document.querySelectorAll("[data-tilt]");
-initTilt(tiltCards);
-
-initParallaxBackdrop(document.querySelector("[data-parallax-root]"));
-
+initReveal(document.querySelectorAll(".reveal"));
+initTilt(document.querySelectorAll("[data-tilt]"));
 document.querySelectorAll("[data-floating-tags]").forEach((list) => initFloatingTags(list));
 
 const toast = document.querySelector(".toast");
