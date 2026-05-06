@@ -15,7 +15,7 @@ export const cv = {
     },
     {
       role: "Vendedor de electrónica y electrodomésticos",
-      company: "Carrefour Gran Plaza",
+      company: "Carrefour",
       period: "Atención al cliente y tecnología",
       bullets: [
         "Asesoramiento personalizado a clientes en productos de tecnología y electrodomésticos.",
@@ -25,7 +25,7 @@ export const cv = {
     },
     {
       role: "Ayudante de restaurante",
-      company: "Burger King Gran Plaza",
+      company: "Burger King",
       period: "Atención al cliente y trabajo en equipo",
       bullets: [
         "Atención al cliente en un entorno de ritmo alto.",

@@ -1,5 +1,6 @@
 const TILT_MAX_X = 7;
 const TILT_MAX_Y = 9;
+const REVEAL_DURATION_MS = 860;
 
 export function initReveal(items) {
   if (!items.length) {
@@ -7,7 +8,7 @@ export function initReveal(items) {
   }
 
   if (!("IntersectionObserver" in window)) {
-    items.forEach((item) => item.classList.add("is-visible"));
+    items.forEach((item) => item.classList.add("is-visible", "has-revealed"));
     return;
   }
 
@@ -16,11 +17,20 @@ export function initReveal(items) {
       for (const entry of entries) {
         if (entry.isIntersecting) {
           entry.target.classList.add("is-visible");
+          const revealDelay = Number.parseFloat(
+            getComputedStyle(entry.target).getPropertyValue("--reveal-delay")
+          ) || 0;
+          window.setTimeout(() => {
+            entry.target.classList.add("has-revealed");
+          }, revealDelay + REVEAL_DURATION_MS + 80);
           observer.unobserve(entry.target);
         }
       }
     },
-    { threshold: 0.16 }
+    {
+      rootMargin: "0px 0px -2% 0px",
+      threshold: 0.12
+    }
   );
 
   let groupIndex = 0;
