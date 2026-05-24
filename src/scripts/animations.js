@@ -1,6 +1,13 @@
+// Animaciones del cliente: reveal on-scroll vía IntersectionObserver,
+// efecto tilt 3D en cards de proyecto, y stagger de delays para los tags
+// flotantes. Las tres son independientes y los nombres exportados se
+// pueden llamar por separado desde main.js.
+
 const TILT_MAX_X = 7;
 const TILT_MAX_Y = 9;
-const REVEAL_DURATION_MS = 860;
+const REVEAL_DURATION_MS = 520;
+const REVEAL_STAGGER_MS = 50;
+const REVEAL_STAGGER_MAX_MS = 160;
 
 export function initReveal(items) {
   if (!items.length) {
@@ -20,6 +27,8 @@ export function initReveal(items) {
           const revealDelay = Number.parseFloat(
             getComputedStyle(entry.target).getPropertyValue("--reveal-delay")
           ) || 0;
+          // El margen extra (+80ms) garantiza que el transition haya
+          // terminado antes de soltar will-change vía has-revealed.
           window.setTimeout(() => {
             entry.target.classList.add("has-revealed");
           }, revealDelay + REVEAL_DURATION_MS + 80);
@@ -33,6 +42,9 @@ export function initReveal(items) {
     }
   );
 
+  // Reseteamos el contador al cambiar de padre para que reveals de secciones
+  // distintas no acumulen delay entre ellos. Dentro de un mismo grupo, cada
+  // item suma un escalón hasta el tope para evitar cascadas demasiado largas.
   let groupIndex = 0;
   let lastParent = null;
   items.forEach((item) => {
@@ -41,7 +53,7 @@ export function initReveal(items) {
       groupIndex = 0;
       lastParent = parent;
     }
-    item.style.setProperty("--reveal-delay", `${Math.min(groupIndex * 70, 320)}ms`);
+    item.style.setProperty("--reveal-delay", `${Math.min(groupIndex * REVEAL_STAGGER_MS, REVEAL_STAGGER_MAX_MS)}ms`);
     groupIndex += 1;
     observer.observe(item);
   });
@@ -115,6 +127,8 @@ export function initFloatingTags(list) {
   const items = list.querySelectorAll("li");
   items.forEach((item, index) => {
     item.style.setProperty("--tag-index", String(index));
+    // 7 buckets de 0.4s cubren el ciclo de 2.8s de tag-float; así los tags
+    // suben y bajan desfasados sin sincronizarse en bloque.
     item.style.setProperty("--tag-float-delay", `${(index % 7) * 0.4}s`);
   });
 }

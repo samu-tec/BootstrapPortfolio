@@ -47,4 +47,4 @@ npm test            # build + validaciones
 
 - La escena 3D se pausa cuando la pestaña no está visible y respeta `prefers-reduced-motion`.
 - Pixel ratio limitado (≤1.5 escritorio, ≤1 móvil) y partículas reducidas en pantallas pequeñas; en dispositivos muy limitados se muestra un fallback CSS.
-- El contenido y el código quedan sin licencia de reutilización; consulta `LICENCE`.
+- Contenido y código bajo licencia Creative Commons BY-NC-ND 4.0: se puede ver y compartir con atribución, pero no modificar, redistribuir ni usar con fines comerciales. Detalles en `LICENSE`.

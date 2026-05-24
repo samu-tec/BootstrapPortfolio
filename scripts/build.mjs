@@ -1,3 +1,8 @@
+// Generador estático: renderiza las plantillas a dist/, copia los assets de
+// src/ y public/, y versiona las URLs con ?v=<mtime> para invalidar caché.
+// Las páginas se pintan en orden tras copyStaticAssets() para que el cache
+// de mtimes (assetVersions) tenga datos cuando asset() los consulte.
+
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -5,6 +10,7 @@ import { profile } from "../src/data/profile.mjs";
 import { projects } from "../src/data/projects.mjs";
 import { linkGroups } from "../src/data/links.mjs";
 import { cv } from "../src/data/cv.mjs";
+import { isInside } from "./lib/paths.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, "..");
@@ -79,6 +85,23 @@ function copyStaticAssets() {
   if (fs.existsSync(publicDir)) {
     copyDir(publicDir, distDir);
   }
+
+  indexAssetVersions();
+}
+
+// Tabla mtime de cada archivo en dist/. Se llena una sola vez por build
+// (en copyStaticAssets) y la lee asset() para evitar N llamadas a statSync
+// durante el render del HTML.
+const assetVersions = new Map();
+
+function indexAssetVersions() {
+  assetVersions.clear();
+  for (const entry of fs.readdirSync(distDir, { recursive: true, withFileTypes: true })) {
+    if (!entry.isFile()) continue;
+    const full = path.join(entry.parentPath, entry.name);
+    const version = Math.floor(fs.statSync(full).mtimeMs / 1000);
+    assetVersions.set(path.relative(distDir, full), version);
+  }
 }
 
 function copyDir(from, to) {
@@ -137,10 +160,13 @@ function renderHome() {
 
         <div class="hero__visual reveal">
           <figure class="about-portrait">
-            <img src="${asset("assets/img/samuel-ciocan.png", 0)}" alt="Foto de Samuel Ciocan" width="760" height="760" decoding="async" fetchpriority="high">
+            <picture>
+              <source srcset="${asset("assets/img/samuel-ciocan.avif", 0)}" type="image/avif">
+              <img src="${asset("assets/img/samuel-ciocan.png", 0)}" alt="Foto de Samuel Ciocan" width="760" height="760" decoding="async" fetchpriority="high">
+            </picture>
             <figcaption class="about-portrait__chip">
               <span class="status-dot" aria-hidden="true"></span>
-              <span>Desarrollador en <span class="growth-word"><span class="sr-only">crecimiento</span>${animatedLetters("crecimiento")}</span>.</span>
+              <span class="growth-word"><span class="sr-only">Creando con propósito</span>${animatedLetters("Creando con propósito")}</span>
             </figcaption>
           </figure>
         </div>
@@ -226,7 +252,10 @@ function renderLinks() {
     body: `
       <section class="links-hero">
         <div class="link-card-main reveal">
-          <img src="${asset("assets/img/samuel-ciocan.png", 1)}" alt="Foto de Samuel Ciocan" width="220" height="220" decoding="async">
+          <picture>
+            <source srcset="${asset("assets/img/samuel-ciocan.avif", 1)}" type="image/avif">
+            <img src="${asset("assets/img/samuel-ciocan.png", 1)}" alt="Foto de Samuel Ciocan" width="220" height="220" decoding="async">
+          </picture>
           <p class="eyebrow">Enlaces</p>
           <h1 class="name-gradient">${escapeHtml(profile.name)}</h1>
           <p>${escapeHtml(profile.role)} · proyectos, CV, perfiles y contacto.</p>
@@ -235,8 +264,8 @@ function renderLinks() {
 
         <div class="links-stack">
           ${linkGroups
-      .map(
-        (group) => `
+        .map(
+          (group) => `
                 <section class="link-group reveal" aria-labelledby="link-group-${slugify(group.title)}">
                   <h2 id="link-group-${slugify(group.title)}">${escapeHtml(group.title)}</h2>
                   <div class="bio-links">
@@ -244,8 +273,8 @@ function renderLinks() {
                   </div>
                 </section>
               `
-    )
-      .join("")}
+        )
+        .join("")}
         </div>
       </section>
     `
@@ -374,7 +403,7 @@ function layout({ title, description, active, route, depth, body, bodyClass = ""
   <meta name="twitter:description" content="${escapeAttribute(description)}">
   <meta name="twitter:image" content="${escapeAttribute(image)}">
   <meta name="twitter:image:alt" content="${escapeAttribute(profile.seo.imageAlt)}">
-  <script>document.documentElement.classList.add("js-enabled");</script>
+  <script>document.documentElement.classList.add("has-js");</script>
   <link rel="icon" href="${asset("favicon.svg", depth)}" type="image/svg+xml">
   <link rel="manifest" href="${asset("site.webmanifest", depth)}">
   <link rel="preload" href="${asset("assets/css/styles.css", depth)}" as="style">
@@ -410,13 +439,13 @@ function siteHeader(active, depth) {
       </button>
       <div class="nav-links" id="site-menu">
         ${navItems
-    .map(
-      (item) => `
+      .map(
+        (item) => `
               <a href="${routeHref(item.href, depth)}" ${item.active === active ? 'aria-current="page"' : ""
-        }>${escapeHtml(item.label)}</a>
+          }>${escapeHtml(item.label)}</a>
             `
-  )
-    .join("")}
+      )
+      .join("")}
       </div>
     </nav>
   </header>
@@ -424,13 +453,11 @@ function siteHeader(active, depth) {
 }
 
 function siteFooter(depth) {
-  const year = new Date().getFullYear();
-
   return `
   <footer class="site-footer">
     <div class="footer-shell">
       <div>
-        <p>© ${year} ${escapeHtml(profile.name)}</p>
+        <p>© ${escapeHtml(profile.name)}</p>
       </div>
       <div class="footer-links" aria-label="Enlaces básicos">
         ${navItems.map((item) => `<a href="${routeHref(item.href, depth)}">${escapeHtml(item.label)}</a>`).join("")}
@@ -504,8 +531,14 @@ function eyebrow(label, iconName) {
 }
 
 function animatedLetters(value) {
+  let visibleIndex = 0;
   return [...value]
-    .map((letter, index) => `<span aria-hidden="true" style="--letter-index: ${index}">${escapeHtml(letter)}</span>`)
+    .map((letter) => {
+      if (letter === " ") return " ";
+      const html = `<span aria-hidden="true" style="--letter-index: ${visibleIndex}">${escapeHtml(letter)}</span>`;
+      visibleIndex += 1;
+      return html;
+    })
     .join("");
 }
 
@@ -544,8 +577,8 @@ function timelineList(items) {
   return `
     <div class="timeline-list">
       ${items
-    .map(
-      (item) => `
+      .map(
+        (item) => `
             <article class="timeline-item">
               <div>
                 <h3>${escapeHtml(item.role)}</h3>
@@ -554,8 +587,8 @@ function timelineList(items) {
               ${featureList(item.bullets)}
             </article>
           `
-  )
-    .join("")}
+      )
+      .join("")}
     </div>
   `;
 }
@@ -564,15 +597,15 @@ function educationList(items) {
   return `
     <div class="education-list">
       ${items
-    .map(
-      (item) => `
+      .map(
+        (item) => `
             <article>
               <h3>${escapeHtml(item.title)}</h3>
               <p>${escapeHtml(item.place)} · ${escapeHtml(item.period)}</p>
             </article>
           `
-  )
-    .join("")}
+      )
+      .join("")}
     </div>
   `;
 }
@@ -593,18 +626,24 @@ function renderSitemap() {
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${pages
-    .map(
-      (url) => `  <url>
+      .map(
+        (url) => `  <url>
     <loc>${canonicalUrl(url)}</loc>
   </url>`
-  )
-    .join("\n")}
+      )
+      .join("\n")}
 </urlset>
 `;
 }
 
+// Devuelve la URL relativa de un asset con cache busting (?v=<mtime>).
+// Requiere que indexAssetVersions() haya corrido antes; si el archivo no
+// estaba en dist/ cuando se indexó, se devuelve sin query (no rompe nada,
+// pero pierde el invalidado de caché para ese asset).
 function asset(relativePath, depth) {
-  return `${"../".repeat(depth)}${relativePath}`;
+  const version = assetVersions.get(relativePath);
+  const query = version === undefined ? "" : `?v=${version}`;
+  return `${"../".repeat(depth)}${relativePath}${query}`;
 }
 
 function routeHref(href, depth) {
@@ -636,11 +675,6 @@ function isExternal(href) {
   return /^https?:\/\//.test(href);
 }
 
-function isInside(parent, child) {
-  const relative = path.relative(parent, child);
-  return relative === "" || (!relative.startsWith("..") && !path.isAbsolute(relative));
-}
-
 function escapeHtml(value) {
   return String(value)
     .replaceAll("&", "&amp;")
@@ -654,6 +688,8 @@ function escapeAttribute(value) {
   return escapeHtml(value).replaceAll("\n", " ");
 }
 
+// NFD separa cada letra acentuada en base + marca combinante; el segundo
+// replace borra esas marcas (rango U+0300 a U+036F) y deja la base ASCII.
 function slugify(value) {
   return String(value)
     .toLowerCase()

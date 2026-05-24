@@ -1,7 +1,13 @@
+// Comprobaciones post-build: ejecuta el build, valida que todas las páginas
+// generadas tengan SEO, metadatos sociales, alts en imágenes y referencias
+// internas reales. Falla con un mensaje claro al primer assert que rompa.
+
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { build } from "./build.mjs";
+import { isInside } from "./lib/paths.mjs";
+import { profile } from "../src/data/profile.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, "..");
@@ -21,7 +27,8 @@ const requiredFiles = [
   "assets/css/styles.css",
   "assets/js/main.js",
   "assets/img/samuel-ciocan.png",
-  "assets/img/og-samuel-ciocan.png",
+  "assets/img/samuel-ciocan.avif",
+  profile.seo.image,
   "favicon.svg"
 ];
 
@@ -50,8 +57,11 @@ const forbiddenStrings = [
   "linktr.ee"
 ];
 
-const binaryFilePattern = /\.(png|jpg|jpeg|gif|webp|ico)$/i;
-const mojibakeFragments = ["\u00c3", "\u00c2", "\u00e2", "\ufffd"];
+const binaryFilePattern = /\.(png|jpg|jpeg|gif|webp|avif|ico)$/i;
+// Caracteres típicos de mojibake (UTF-8 mal interpretado como Latin-1).
+// Se construyen con String.fromCharCode para que el propio validador no
+// dispare su check al leer este archivo.
+const mojibakeFragments = [0xC3, 0xC2, 0xE2, 0xFFFD].map((code) => String.fromCharCode(code));
 
 for (const file of requiredFiles) {
   assert(fs.existsSync(path.join(distDir, file)), `Missing generated file: ${file}`);
@@ -61,7 +71,7 @@ const generatedFiles = listFiles(distDir);
 const htmlFiles = generatedFiles.filter((file) => file.endsWith(".html"));
 const textFiles = uniqueFiles([
   path.join(rootDir, ".gitignore"),
-  path.join(rootDir, "LICENCE"),
+  path.join(rootDir, "LICENSE"),
   path.join(rootDir, "README.md"),
   path.join(rootDir, "package.json"),
   path.join(rootDir, "wrangler.jsonc"),
@@ -71,8 +81,16 @@ const textFiles = uniqueFiles([
   ...generatedFiles
 ]).filter(isTextFile);
 
+// Lee cada archivo de texto una sola vez y comparte el contenido entre los
+// dos chequeos posteriores (forbiddenStrings sobre lo generado, mojibake
+// sobre todo el repo) y el bucle de HTML.
+const fileContents = new Map();
+for (const file of textFiles) {
+  fileContents.set(file, fs.readFileSync(file, "utf8"));
+}
+
 for (const file of htmlFiles) {
-  const html = fs.readFileSync(file, "utf8");
+  const html = fileContents.get(file) ?? fs.readFileSync(file, "utf8");
   const relative = path.relative(distDir, file);
 
   assert(html.includes('<html lang="es">'), `${relative} is missing lang="es"`);
@@ -96,21 +114,21 @@ for (const file of htmlFiles) {
   validateImageAltText(html, relative);
 }
 
-const homeHtml = fs.readFileSync(path.join(distDir, "index.html"), "utf8");
+const homeHtml = fileContents.get(path.join(distDir, "index.html"));
 for (const metadata of expectedHomeMetadata) {
   assert(homeHtml.includes(metadata), `Home page is missing expected social metadata: ${metadata}`);
 }
 
-const ogImagePath = path.join(distDir, "assets", "img", "og-samuel-ciocan.png");
+const ogImagePath = path.join(distDir, profile.seo.image);
 const ogImageSize = readPngSize(ogImagePath);
-assert(ogImageSize.width === 1200, `OG image width must be 1200 px, got ${ogImageSize.width}`);
-assert(ogImageSize.height === 627, `OG image height must be 627 px, got ${ogImageSize.height}`);
+assert(ogImageSize.width === profile.seo.imageWidth, `OG image width must be ${profile.seo.imageWidth} px, got ${ogImageSize.width}`);
+assert(ogImageSize.height === profile.seo.imageHeight, `OG image height must be ${profile.seo.imageHeight} px, got ${ogImageSize.height}`);
 
 const generatedText = generatedFiles
   .filter(isTextFile)
-  .map((file) => fs.readFileSync(file, "utf8"))
+  .map((file) => fileContents.get(file) ?? "")
   .join("\n");
-const repositoryText = textFiles.map((file) => fs.readFileSync(file, "utf8")).join("\n");
+const repositoryText = textFiles.map((file) => fileContents.get(file) ?? "").join("\n");
 
 for (const forbidden of forbiddenStrings) {
   assert(!generatedText.includes(forbidden), `Generated site contains forbidden string: ${forbidden}`);
@@ -170,6 +188,8 @@ function hasRelValue(tag, value) {
   return Boolean(rel && rel[1].split(/\s+/).includes(value));
 }
 
+// PNG fija el chunk IHDR como primero después de la firma; ancho y alto van
+// en los offsets 16 y 20 como uint32 big-endian (PNG spec, sección 11.2.2).
 function readPngSize(file) {
   const buffer = fs.readFileSync(file);
   assert(buffer.toString("ascii", 1, 4) === "PNG", `${file} is not a PNG file`);
@@ -205,11 +225,6 @@ function uniqueFiles(files) {
 
 function isTextFile(file) {
   return !binaryFilePattern.test(file);
-}
-
-function isInside(parent, child) {
-  const relative = path.relative(parent, child);
-  return relative === "" || (!relative.startsWith("..") && !path.isAbsolute(relative));
 }
 
 function assert(condition, message) {

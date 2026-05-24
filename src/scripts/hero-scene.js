@@ -1,3 +1,12 @@
+// Escena 3D ligera renderizada en Canvas 2D: un icosaedro rotando con
+// partículas orbitando a su alrededor. Sin dependencias. Hace throttle a
+// ~71fps, pausa cuando la pestaña no es visible y respeta prefers-reduced
+// -motion. En móvil baja DPR y reduce partículas; en hover muy limitado se
+// desactiva entero desde main.js.
+
+// 12 vértices canónicos del icosaedro usando el número áureo phi: las
+// coordenadas (0, ±1, ±phi), (±1, ±phi, 0), (±phi, 0, ±1) producen un
+// poliedro regular con todas las aristas de longitud 2.
 const ICOSAHEDRON_VERTICES = (() => {
   const phi = (1 + Math.sqrt(5)) / 2;
   return [
@@ -7,6 +16,8 @@ const ICOSAHEDRON_VERTICES = (() => {
   ].map(([x, y, z]) => ({ x, y, z }));
 })();
 
+// Aristas calculadas por distancia: dos vértices conectados están a
+// longitud 2 (la arista canónica). Tolerancia 0.01 para errores de float.
 const ICOSAHEDRON_EDGES = (() => {
   const edges = [];
   const target = 2;
@@ -82,6 +93,8 @@ export function initHeroScene(canvas) {
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
 
+  // Rotaciones de Euler aplicadas en orden X -> Y -> Z. Cada bloque sustituye
+  // dos coordenadas con las versiones rotadas por matriz 2D del plano que toca.
   function rotate(p, ax, ay, az) {
     let { x, y, z } = p;
     const cx1 = Math.cos(ax);
@@ -103,6 +116,9 @@ export function initHeroScene(canvas) {
     return { x: nnx, y: nny, z };
   }
 
+  // Proyección de perspectiva sencilla: factor = fov / (fov + z) hace que
+  // los puntos lejanos (z alto) se vean más pequeños. baseScale ajusta el
+  // tamaño visual al lado más corto del canvas para que escale con la caja.
   function project(p) {
     const baseScale = Math.min(width, height) * 0.21;
     const fov = 6;
@@ -203,6 +219,8 @@ export function initHeroScene(canvas) {
     }
   }
 
+  // Cap a ~71fps (14ms entre frames). En pantallas a 120Hz evita gastar
+  // batería sin aportar fluidez extra a la escena (que ya se ve estable).
   function frame(time) {
     if (!running) {
       return;

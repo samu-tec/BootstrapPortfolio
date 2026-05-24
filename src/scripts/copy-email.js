@@ -1,3 +1,8 @@
+// Copia al portapapeles del email mostrado en el botón. Usa la Clipboard
+// API moderna y cae a un textarea + execCommand cuando no está disponible
+// (Safari/contextos sin HTTPS). Da feedback inmediato en el botón y en un
+// toast compartido.
+
 export function initCopyEmail(buttons, toast) {
   buttons.forEach((button) => {
     button.addEventListener("click", async () => {

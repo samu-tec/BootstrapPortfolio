@@ -1,8 +1,13 @@
+// Servidor local de previsualización. Rebuilda dist/ al arrancar y sirve
+// archivos estáticos con resolución estilo SPA (request a /foo/ -> /foo/index.html).
+// Si el puerto está ocupado, va probando los siguientes.
+
 import fs from "node:fs";
 import http from "node:http";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { build } from "./build.mjs";
+import { isInside } from "./lib/paths.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, "..");
@@ -10,6 +15,7 @@ const distDir = path.join(rootDir, "dist");
 const startPort = Number.parseInt(process.env.PORT || "4173", 10);
 
 const contentTypes = {
+  ".avif": "image/avif",
   ".css": "text/css; charset=utf-8",
   ".html": "text/html; charset=utf-8",
   ".js": "text/javascript; charset=utf-8",
@@ -18,6 +24,7 @@ const contentTypes = {
   ".svg": "image/svg+xml; charset=utf-8",
   ".txt": "text/plain; charset=utf-8",
   ".webmanifest": "application/manifest+json; charset=utf-8",
+  ".webp": "image/webp",
   ".xml": "application/xml; charset=utf-8"
 };
 
@@ -83,22 +90,31 @@ function resolveRequest(rawUrl) {
     return null;
   }
 
-  if (fs.existsSync(candidate) && fs.statSync(candidate).isFile()) {
+  // Un solo stat por petición: cubre archivo, directorio y "no existe" en un
+  // único syscall en vez de dos existsSync + statSync separados.
+  const stat = statOrNull(candidate);
+
+  if (stat?.isFile()) {
     return candidate;
   }
 
-  if (fs.existsSync(candidate) && fs.statSync(candidate).isDirectory()) {
+  if (stat?.isDirectory()) {
     return path.join(candidate, "index.html");
   }
 
-  if (fs.existsSync(`${candidate}.html`)) {
+  if (statOrNull(`${candidate}.html`)?.isFile()) {
     return `${candidate}.html`;
   }
 
+  // Fallback al index para que los enlaces directos a páginas que aún no
+  // existen no rompan el flujo de desarrollo.
   return path.join(distDir, "index.html");
 }
 
-function isInside(parent, child) {
-  const relative = path.relative(parent, child);
-  return relative === "" || (!relative.startsWith("..") && !path.isAbsolute(relative));
+function statOrNull(target) {
+  try {
+    return fs.statSync(target);
+  } catch {
+    return null;
+  }
 }

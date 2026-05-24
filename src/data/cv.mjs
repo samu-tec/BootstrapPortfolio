@@ -37,18 +37,18 @@ export const cv = {
   education: [
     {
       title: "Técnico Superior en Desarrollo de Aplicaciones Web",
-      place: "I.E.S. Aguadulce",
+      place: "IES Aguadulce (España)",
       period: "2023 - 2026"
     },
     {
-      title: "Técnico en Aprovechamiento y Conservación del Medio Natural",
-      place: "Liceul cu Program Sportiv Bistrita",
+      title: "Bachillerato + Técnico en Protección del Medio Ambiente",
+      place: "Liceul cu Program Sportiv Bistrița (Rumanía)",
       period: "2021 - 2023"
     },
     {
-      title: "Bachillerato",
-      place: "Liceul cu Program Sportiv Bistrita",
-      period: "2021 - 2023"
+      title: "Educación Secundaria Obligatoria",
+      place: "IES Sabinar (España)",
+      period: "2017 - 2021"
     }
   ],
   skills: [

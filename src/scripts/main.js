@@ -1,7 +1,12 @@
+// Entry point del cliente: arranca hero canvas, reveal scroll, tilt 3D,
+// floating tags, copia de correo y el toggle de la nav móvil.
+
 import { initHeroScene } from "./hero-scene.js";
 import { initReveal, initTilt, initFloatingTags } from "./animations.js";
 import { initCopyEmail } from "./copy-email.js";
 
+// La clase has-js permite al CSS condicionar estilos a que JS esté activo
+// (por ejemplo, los reveals quedan visibles por defecto si JS falla).
 document.documentElement.classList.add("has-js");
 
 const navToggle = document.querySelector(".nav-toggle");

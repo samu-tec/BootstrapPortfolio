@@ -15,9 +15,9 @@
   --danger: #ff8b7a;
   --shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
   --shadow-soft: 0 18px 60px rgba(0, 0, 0, 0.28);
-  --chrome-blur: 22px;
-  --footer-blur: 18px;
-  --panel-blur: 18px;
+  --chrome-blur: 14px;
+  --footer-blur: 12px;
+  --panel-blur: 12px;
   --max-width: 1180px;
   --nav-height: 76px;
   --radius: 14px;
@@ -76,19 +76,8 @@ body::after {
   pointer-events: none;
   filter: blur(14px);
   animation: drift-glow 18s ease-in-out infinite alternate;
-}
-
-.cv-page {
-  --chrome-blur: 12px;
-  --footer-blur: 12px;
-  --panel: rgba(20, 22, 28, 0.76);
-  --panel-blur: 8px;
-}
-
-.cv-page::after {
-  animation: none;
-  opacity: 0.72;
-  transform: none;
+  will-change: transform, opacity;
+  contain: strict;
 }
 
 img,
@@ -154,6 +143,7 @@ textarea {
   background: rgba(7, 8, 12, 0.72);
   backdrop-filter: blur(var(--chrome-blur));
   -webkit-backdrop-filter: blur(var(--chrome-blur));
+  transform: translateZ(0);
 }
 
 .nav-shell {
@@ -391,7 +381,8 @@ p {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  animation: name-gradient-shift 7s ease-in-out infinite alternate;
+  animation: name-gradient-shift 14s ease-in-out infinite alternate;
+  will-change: background-position;
 }
 
 .hero__role {
@@ -532,8 +523,9 @@ p {
     var(--panel);
   border: 1px solid var(--line);
   border-radius: 12px;
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transform: translateZ(0);
 }
 
 .hero__facts dt {
@@ -615,6 +607,8 @@ p {
   border-radius: 50%;
   opacity: 0.5;
   animation: orbit-spin 22s linear infinite;
+  will-change: transform;
+  contain: layout paint;
 }
 
 .orbit-fallback span:nth-child(2) {
@@ -650,8 +644,9 @@ p {
   background: rgba(8, 9, 11, 0.72);
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 12px;
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transform: translateZ(0);
   font-size: 0.88rem;
   font-weight: 700;
   box-shadow: var(--shadow-soft);
@@ -673,16 +668,28 @@ p {
 }
 
 .status-dot {
+  position: relative;
   width: 0.62rem;
   height: 0.62rem;
   background: var(--mint);
   border-radius: 50%;
   box-shadow: 0 0 0 5px rgba(110, 216, 195, 0.16);
+}
+
+.status-dot::after {
+  position: absolute;
+  inset: -5px;
+  content: "";
+  border-radius: 50%;
+  background: rgba(110, 216, 195, 0.16);
   animation: pulse-dot 2.4s ease-in-out infinite;
+  will-change: transform, opacity;
 }
 
 .section-block {
   padding: 4.25rem 0;
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 720px;
 }
 
 .section-heading {
@@ -811,15 +818,15 @@ p {
   background: rgba(8, 9, 11, 0.78);
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 12px;
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transform: translateZ(0);
   font-size: 0.88rem;
   font-weight: 700;
   box-shadow: var(--shadow-soft);
 }
 
 .growth-word {
-  display: inline-flex;
   color: var(--text);
 }
 
@@ -828,6 +835,7 @@ p {
   transform-origin: 50% 75%;
   animation: growth-letter 2.2s ease-in-out infinite;
   animation-delay: calc(var(--letter-index) * 70ms);
+  will-change: transform;
 }
 
 .about-content {
@@ -904,20 +912,21 @@ p {
   color: var(--muted-strong);
   background:
     linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.015)),
-    rgba(20, 22, 28, 0.55);
+    rgba(20, 22, 28, 0.7);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
   font-size: 0.95rem;
   font-weight: 600;
   letter-spacing: 0.01em;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   animation:
     tag-in 480ms ease-out both,
     tag-float 5s linear infinite;
   animation-delay:
     calc(var(--tag-index, 0) * 50ms),
     calc(var(--tag-float-delay, 0s));
+  will-change: transform;
   transition:
     color 220ms ease,
     border-color 220ms ease,
@@ -951,8 +960,9 @@ p {
   border: 1px solid rgba(255, 122, 24, 0.22);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transform: translateZ(0);
   overflow: hidden;
 }
 
@@ -1579,6 +1589,7 @@ p {
   background: rgba(7, 8, 12, 0.78);
   backdrop-filter: blur(var(--footer-blur));
   -webkit-backdrop-filter: blur(var(--footer-blur));
+  transform: translateZ(0);
 }
 
 .footer-shell {
@@ -1638,10 +1649,10 @@ p {
 
 .has-js .reveal:not(.has-revealed) {
   opacity: 0;
-  transform: translate3d(0, 44px, 0);
+  transform: translate3d(0, 28px, 0);
   transition:
-    opacity 860ms cubic-bezier(0.16, 1, 0.3, 1),
-    transform 860ms cubic-bezier(0.16, 1, 0.3, 1);
+    opacity 520ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 520ms cubic-bezier(0.16, 1, 0.3, 1);
   transition-delay: var(--reveal-delay, 0ms);
 }
 
@@ -1688,11 +1699,13 @@ p {
 @keyframes pulse-dot {
   0%,
   100% {
-    box-shadow: 0 0 0 5px rgba(110, 216, 195, 0.16);
+    transform: scale(1);
+    opacity: 1;
   }
 
   50% {
-    box-shadow: 0 0 0 10px rgba(110, 216, 195, 0.06);
+    transform: scale(1.6);
+    opacity: 0.35;
   }
 }
 
@@ -1847,16 +1860,16 @@ p {
     box-shadow: var(--shadow);
   }
 
-  .js-enabled .nav-shell {
+  .has-js .nav-shell {
     flex-wrap: nowrap;
     padding: 0;
   }
 
-  .js-enabled .nav-toggle {
+  .has-js .nav-toggle {
     display: block;
   }
 
-  .js-enabled .nav-links {
+  .has-js .nav-links {
     position: absolute;
     top: calc(var(--nav-height) - 1px);
     right: 1rem;
@@ -1870,7 +1883,7 @@ p {
       transform 220ms ease;
   }
 
-  .js-enabled .nav-links.is-open {
+  .has-js .nav-links.is-open {
     transform: translateY(0);
     opacity: 1;
     pointer-events: auto;
