@@ -318,7 +318,6 @@ function renderCv() {
     active: "cv",
     route: "/cv/",
     depth: 1,
-    bodyClass: "cv-page",
     body: `
       <section class="page-hero section-shell reveal">
         <p class="eyebrow">Currículum web</p>
